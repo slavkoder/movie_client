@@ -21,7 +21,7 @@ class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
 
-    private val adapter = MovieListAdapter()
+    private val listAdapter = MovieListAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,16 +34,21 @@ class MainFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
 
-        movieList.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        movieList.adapter = adapter
+        movieList.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            movieList.adapter = listAdapter
+        }
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
         viewModel.latestMovies.observe(this, Observer {
             Snackbar.make(main, "Received ${it.size} movies", Snackbar.LENGTH_SHORT).show()
-            adapter.setData(it)
-            adapter.notifyDataSetChanged()
+
+            listAdapter.apply {
+                setData(it)
+                notifyDataSetChanged()
+            }
         })
 
         viewModel.getLatestMovies()

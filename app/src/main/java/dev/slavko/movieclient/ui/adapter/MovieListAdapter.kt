@@ -34,10 +34,11 @@ class MovieListAdapter : RecyclerView.Adapter<MovieListAdapter.MovieVH>() {
     class MovieVH(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(movie: Movie) {
-            itemView.movieTitle.text = movie.originalTitle
-            itemView.movieSummary.text = movie.overview
-
-            Picasso.get().load(movie.posterUrl).into(itemView.moviePoster)
+            itemView.apply {
+                movieTitle.text = movie.originalTitle
+                movieSummary.text = movie.overview
+                Picasso.get().load(movie.posterUrl).into(moviePoster)
+            }
         }
 
     }
